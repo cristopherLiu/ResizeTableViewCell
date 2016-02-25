@@ -34,7 +34,6 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        tableView.estimatedSectionHeaderHeight = 25
         tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
         
@@ -52,7 +51,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
-        print("cellForRowAtIndexPath \(indexPath)")
+        
         let cell = self.tableView.dequeueReusableCellWithIdentifier("CustomCell", forIndexPath: indexPath) as! CustomCell
         
         let data = datas[indexPath.row]
@@ -61,15 +60,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
             data.isShow = !data.isShow //save data
             
-//            self.tableView.reloadHeight()
+            self.tableView.reSizeHeight()
 //            self.tableView.reloadData()
 //            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-            
-            let offset = self.tableView.contentOffset
-            self.tableView.reloadHeight()
-            self.tableView.layer.removeAllAnimations()
-            self.tableView.setContentOffset(offset, animated: false)
-            
         })
         return cell
     }
@@ -78,9 +71,12 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
 extension UITableView{
     
-    func reloadHeight(){
+    func reSizeHeight(){
+        let offset = self.contentOffset
         self.beginUpdates()
         self.endUpdates()
+        self.layer.removeAllAnimations()
+        self.setContentOffset(offset, animated: false)
     }
 }
 
